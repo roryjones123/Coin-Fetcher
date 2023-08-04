@@ -42,3 +42,19 @@ Clicking on each item navigates to a page with more information on the coin.
 Use swipe-down gesture to refresh downloaded data.
 
 Supports light/dark mode.
+
+
+## **TODO**
+
+Todo:
+
+1. Sort tests
+2. Improve caching
+3. Change refresh to an icon due to large list types
+4. Filter by tag option
+5. Animate list items
+6. Add click
+7. Add logger
+8. Sealed error classes (?)
+9. Better implementation names to abide by best practises
+10. And more
