@@ -10,10 +10,10 @@ plugins {
 
 android {
     compileSdk = 33
-    namespace = "eu.krzdabrowski.starter"
+    namespace = "com.roz.coinfetcher"
 
     defaultConfig {
-        applicationId = "eu.krzdabrowski.starter"
+        applicationId = "com.roz.coinfetcher"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

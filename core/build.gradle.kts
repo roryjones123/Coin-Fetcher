@@ -10,7 +10,7 @@ plugins {
 
 android {
     compileSdk = 33
-    namespace = "eu.krzdabrowski.starter.core"
+    namespace = "com.roz.coinfetcher.core"
 
     with (defaultConfig) {
         minSdk = 24
@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigField("String", "SPACEX_API_URL", "\"https://api.spacexdata.com/v4/\"")
+        buildConfigField("String", "COIN_PAPRIKA_API_URL", "\"https://api.coinpaprika.com/v1/\"")
     }
 
     buildFeatures {

@@ -11,7 +11,7 @@ plugins {
 
 android {
     compileSdk = 33
-    namespace = "eu.krzdabrowski.starter.basicfeature"
+    namespace = "com.roz.coinfetcher.basicfeature"
 
     with (defaultConfig) {
         minSdk = 24
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        testInstrumentationRunner = "eu.krzdabrowski.starter.core.utils.HiltTestRunner"
+        testInstrumentationRunner = "com.roz.coinfetcher.core.utils.HiltTestRunner"
     }
 
     buildFeatures {

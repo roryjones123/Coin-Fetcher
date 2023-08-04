@@ -1,45 +1,44 @@
-# **Android Kotlin starter project - 2022 edition**
+# **Android Times Test**
 
-[![Android Weekly #532 badge](https://androidweekly.net/issues/issue-532/badge)](https://androidweekly.net/issues/issue-532)
+Hello, this is my submission for the Times Android take home test, thanks for taking the time to review the code and 
+considering me for the position.
 
-[![Jetc.dev #147 badge](https://img.shields.io/badge/Featured%20in%20jetc.dev-Issue%20%23147-blue)](https://jetc.dev/issues/147.html)
+## **Preface**
 
-Android starter project, described precisely in [this](https://proandroiddev.com/clean-android-multi-module-offline-first-scalable-app-in-2022-including-jetpack-compose-mvi-987ebecbecae) and [this article](https://medium.com/codequest/clean-android-multi-module-offline-first-scalable-app-in-2022-part-2-including-compose-ui-e1fd0a0f410e).
+As a heads up - I am using one of a few skeletons that I use for personal projects and take-home exercises. 
+I don’t believe that setting up DI/Modules/Packages/Navigation every single time I start a small-to-mid-size project 
+there is a lot of repetition in boiler plate (as it will end up being identical to one of these skeletons in most cases)
+so instead I will justify why I made the choice of skeleton: ie why I chose the architecture that I chose and would be
+happy to discuss these choices further.
 
-The codebase is still up-to-date in 2023 with periodically updates.
+In addition to this, I think this gives me a freedom to :
 
-### **Purpose**
-To show good practices using Kotlin features and latest Android libraries from Jetpack in 2022.
+1. One of the main issues of some concepts in this code (ie clean architecture) is slightly longer setup, which is 
+   contradictory to the spec.
+    1. This is offset by the fact I have skeletons available, which eliminates the boiler plate setup/module setup.
+   
+2. The spec has tight focus. It has one screen and two calls. Complexity is unnecessary especially as the benefits of adhering to Clean/Solid are demonstrated in monolithic projects.
+    1. I believe it is important to demonstrate what I see as important in a larger more complex project like the Times or my previous role, the ideologies that have helped keep code decoupled, testable, maintainable.
 
-For comparison, 2019 edition code available [here](https://github.com/krzdabrowski/android-starter-2019).
+So because setup is quick + I think important to represent what I’ve been learning and seeing is good in larger 
+production projects, I have decided on showcasing some of the aforementioned concepts (like clean/SOLID). It also is
+a good opportunity for me to practise and refresh my knowledge :)
 
-### **Description**
-Application connects to SpaceX API to download its rocket fleet.
+## **Decisions**
+
+### **Clean/Solid Architecture**
+
+### **DI**
+
+### **Caching**
+
+### **Description of Application**
+Application connects to paprika and lists crypto coins. 
 
 Data always comes from the local persistence (offline-first approach) and updates when necessary.
 
-Clicking on each item navigates user to a browser to read more information on the Web.
+Clicking on each item navigates to a page with more information on the coin.
 
 Use swipe-down gesture to refresh downloaded data.
 
-Supports light/dark mode theming automatically.
-
-
-### **Libraries/concepts used**
-
-* Gradle modularised project by features
-* The Clean Architecture with MVI pattern in presentation layer
-* Jetpack Compose with Material3 design - for UI layer
-* Kotlin Coroutines & Kotlin Flow - for concurrency & reactive approach
-* Kotlin Serialization converter - for JSON parsing
-* Retrofit - for networking
-* Hilt - for Dependency Injection pattern implementation
-* Room - for local database
-* Coil - for image loading
-* Version Catalog - for dependency management
-* Timber - for logging
-* JUnit5, Turbine and MockK - for unit tests
-* Jetpack Compose test dependencies, Maestro and Hilt - for UI tests
-* GitHub Actions - for CI/CD
-* Renovate - to update dependencies automatically
-* KtLint and Detekt - for code linting
+Supports light/dark mode.
