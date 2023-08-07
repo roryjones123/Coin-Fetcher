@@ -9,4 +9,6 @@
     <string name="coins_error_fetching">Sorry, something went wrong when fetching coins</string>
     <string name="coins_error_refreshing">Sorry, something went wrong when refreshing coins</string>
 
+    <string name="icon_description">Refresh Icon</string>
+
 </resources>

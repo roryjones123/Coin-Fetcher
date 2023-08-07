@@ -3,6 +3,7 @@ package com.roz.coinfetcher.basicfeature.presentation.composable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +28,7 @@ fun CoinsListContent(
     ) {
         itemsIndexed(
             items = coinList,
-            key = { _, rocket -> rocket.id },
+            key = { _, coin -> coin.id },
         ) { index, item ->
             CoinItem(
                 coin = item,
