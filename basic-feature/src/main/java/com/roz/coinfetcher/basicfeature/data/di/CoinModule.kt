@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import com.roz.coinfetcher.basicfeature.data.remote.api.CoinApi
-import com.roz.coinfetcher.basicfeature.data.repository.CoinRepositoryImpl
+import com.roz.coinfetcher.basicfeature.data.repository.DefaultCoinRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinsUseCase
 import com.roz.coinfetcher.basicfeature.domain.usecase.RefreshCoinsUseCase
@@ -51,6 +51,6 @@ internal object CoinModule {
 
         @Binds
         @Singleton
-        fun bindCoinRepository(impl: CoinRepositoryImpl): CoinRepository
+        fun bindCoinRepository(impl: DefaultCoinRepository): CoinRepository
     }
 }

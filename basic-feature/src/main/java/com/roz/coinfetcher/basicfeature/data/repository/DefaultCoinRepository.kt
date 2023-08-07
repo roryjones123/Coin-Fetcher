@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class CoinRepositoryImpl @Inject constructor(
+class DefaultCoinRepository @Inject constructor(
     private val coinApi: CoinApi,
     private val coinDao: CoinDao,
 ) : CoinRepository {

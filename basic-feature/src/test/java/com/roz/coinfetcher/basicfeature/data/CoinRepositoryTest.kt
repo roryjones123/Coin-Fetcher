@@ -4,7 +4,7 @@ import com.roz.coinfetcher.basicfeature.data.local.dao.CoinDao
 import com.roz.coinfetcher.basicfeature.data.mapper.toDomainModel
 import com.roz.coinfetcher.basicfeature.data.mapper.toEntityModel
 import com.roz.coinfetcher.basicfeature.data.remote.api.CoinApi
-import com.roz.coinfetcher.basicfeature.data.repository.CoinRepositoryImpl
+import com.roz.coinfetcher.basicfeature.data.repository.DefaultCoinRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
 import com.roz.coinfetcher.basicfeature.generateTestRocketFromRemote
 import io.mockk.MockKAnnotations
@@ -65,7 +65,7 @@ class CoinRepositoryTest {
     }
 
     private fun setUpRocketRepository() {
-        objectUnderTest = CoinRepositoryImpl(
+        objectUnderTest = DefaultCoinRepository(
             coinApi,
             coinDao,
         )
