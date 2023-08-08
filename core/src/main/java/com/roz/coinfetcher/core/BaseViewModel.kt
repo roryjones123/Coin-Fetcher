@@ -32,9 +32,6 @@ abstract class BaseViewModel<UI_STATE : Parcelable, PARTIAL_UI_STATE, EVENT, INT
 
     val uiState = savedStateHandle.getStateFlow(SAVED_UI_STATE_KEY, initialState)
 
-    private val eventChannel = Channel<EVENT>(Channel.BUFFERED)
-    val event = eventChannel.receiveAsFlow()
-
     init {
         viewModelScope.launch {
             merge(
@@ -71,12 +68,6 @@ abstract class BaseViewModel<UI_STATE : Parcelable, PARTIAL_UI_STATE, EVENT, INT
         viewModelScope.launch {
             continuousPartialStateFlowListenerStarted.await()
             continuousPartialStateFlow.emitAll(changesFlow)
-        }
-    }
-
-    protected fun publishEvent(event: EVENT) {
-        viewModelScope.launch {
-            eventChannel.send(event)
         }
     }
 

@@ -36,7 +36,6 @@ import kotlinx.coroutines.flow.Flow
 fun HomepageRoute(
     viewModel: HomepageViewModel = hiltViewModel(),
 ) {
-    HandleEvents(viewModel.event)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     CoinsScreen(
@@ -83,19 +82,6 @@ internal fun CoinsScreen(
                 }
             }
         })
-}
-
-@Composable
-private fun HandleEvents(events: Flow<HomepageEvent>) {
-    val uriHandler = LocalUriHandler.current
-
-    events.collectWithLifecycle {
-        when (it) {
-            is OpenWebBrowserWithDetails -> {
-                uriHandler.openUri(it.uri)
-            }
-        }
-    }
 }
 
 @Composable

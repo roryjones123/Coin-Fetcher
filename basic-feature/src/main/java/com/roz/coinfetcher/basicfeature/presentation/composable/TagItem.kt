@@ -10,6 +10,7 @@ import com.roz.coinfetcher.core.design.Typography
 
 @Composable
 fun TagItem(
+    modifier: Modifier = Modifier,
     tag: TagDisplayable,
     onTagClick: (TagDisplayable) -> Unit,
 ) {
@@ -19,8 +20,8 @@ fun TagItem(
         SOLID_ALPHA
     }
 
-    Button(onClick = { onTagClick(tag) }, modifier = Modifier.alpha(alpha)) {
-        Text(text = "${tag.name} (${tag.numberOfTaggedItems})", style = Typography.titleMedium)
+    Button(onClick = { onTagClick(tag) }, modifier = modifier.alpha(alpha)) {
+        Text(text = "${tag.name} (${tag.numberOfTaggedItems})", style = Typography.bodySmall)
     }
 }
 
