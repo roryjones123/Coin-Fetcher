@@ -90,27 +90,7 @@ internal fun CoinsScreen(
                 )
             }
             if (uiState.complexCoin != null) {
-                Dialog(onDismissRequest = { onIntent(DialogClosed) }) {
-                    Box(
-                        modifier = Modifier
-                            .background(color = Color.White, shape = RoundedCornerShape(5))
-                            .padding(dimensionResource(id = R.dimen.dimen_medium))
-                            .fillMaxSize()
-                    ) {
-                        LazyColumn {
-                            items(1) {
-                                IconButton(
-                                    onClick = { onIntent(DialogClosed) },
-                                ) {
-                                    Icon(imageVector = Icons.Outlined.Close, contentDescription = "Close icon")
-                                }
-
-                                Text(text = uiState.complexCoin)
-                                // etc etc, can properly format this data later
-                            }
-                        }
-                    }
-                }
+                ComplexCoinDialog(complexCoin = uiState.complexCoin, onCloseClick = { onIntent(DialogClosed) })
             }
         }
     }
