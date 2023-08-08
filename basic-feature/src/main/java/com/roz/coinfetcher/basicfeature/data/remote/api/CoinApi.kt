@@ -9,5 +9,5 @@ interface CoinApi {
     suspend fun getCoins(): List<CoinResponse>
 
     @GET("coins/{id}")
-    suspend fun getCoinById(@Path("id") coinId: String): CoinResponse
+    suspend fun getCoin(@Path("id") coinId: String): CoinResponse
 }
