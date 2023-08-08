@@ -20,7 +20,7 @@ fun TagItem(
     }
 
     Button(onClick = { onTagClick(tag) }, modifier = Modifier.alpha(alpha)) {
-        Text(text = tag.name ?: "", style = Typography.titleMedium)
+        Text(text = "${tag.name} (${tag.numberOfTaggedItems})", style = Typography.titleMedium)
     }
 }
 

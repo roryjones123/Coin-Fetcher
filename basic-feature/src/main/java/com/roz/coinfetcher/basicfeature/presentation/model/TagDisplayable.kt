@@ -8,5 +8,6 @@ data class TagDisplayable(
     val name: String?,
     val id: String?,
     val coins: List<String>? = emptyList(),
-    val isSelected: Boolean = false
+    val isSelected: Boolean = false,
+    val numberOfTaggedItems: Long = 0L
 ) : Parcelable
