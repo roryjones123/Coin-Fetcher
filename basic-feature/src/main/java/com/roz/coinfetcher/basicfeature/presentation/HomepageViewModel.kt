@@ -1,35 +1,31 @@
 package com.roz.coinfetcher.basicfeature.presentation
 
 import androidx.lifecycle.SavedStateHandle
-import coil.compose.AsyncImagePainter
+import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
-import com.roz.coinfetcher.basicfeature.presentation.HomepageEvent.OpenWebBrowserWithDetails
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.GetHomepageData
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.RefreshHomepageData
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.CoinClicked
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.TagClicked
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState
+import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Dialog
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Error
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Fetched
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Loading
+import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Filter
 import com.roz.coinfetcher.basicfeature.presentation.mapper.toPresentationModel
 import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
 import com.roz.coinfetcher.core.BaseViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.fold
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
-
-private const val HTTP_PREFIX = "http"
-private const val HTTPS_PREFIX = "https"
 
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     private val getHomepageDataUseCase: GetHomepageDataUseCase,
+    private val getCoinUseCase: GetCoinUseCase,
     savedStateHandle: SavedStateHandle,
     coinsInitialState: HomepageUiState,
 ) : BaseViewModel<HomepageUiState, PartialState, HomepageEvent, HomepageIntent>(
@@ -45,6 +41,7 @@ class HomepageViewModel @Inject constructor(
         is RefreshHomepageData -> getHomePageData()
         is CoinClicked -> coinClicked(intent.uri)
         is TagClicked -> tagClicked(intent.tagClicked)
+        is HomepageIntent.DialogClosed -> closeDialog()
     }
 
     override fun reduceUiState(
@@ -56,7 +53,7 @@ class HomepageViewModel @Inject constructor(
             isError = false,
         )
 
-        is PartialState.Filter -> {
+        is Filter -> {
             val tags = previousState.tags.map { tag ->
                 if (tag == partialState.tagPressed) {
                     tag.copy(isSelected = !tag.isSelected)
@@ -86,6 +83,10 @@ class HomepageViewModel @Inject constructor(
             isLoading = false,
             isError = true,
         )
+
+        is Dialog -> previousState.copy(
+            complexCoin = partialState.complexCoin
+        )
     }
 
     private fun getHomePageData(): Flow<PartialState> = flow {
@@ -100,17 +101,29 @@ class HomepageViewModel @Inject constructor(
         }
     }.onStart { Loading }
 
-    private fun coinClicked(uri: String): Flow<PartialState> {
-        if (uri.startsWith(HTTP_PREFIX) || uri.startsWith(HTTPS_PREFIX)) {
-            publishEvent(OpenWebBrowserWithDetails(uri))
-        }
 
-        return emptyFlow()
+    private fun getCoin(id: String): Flow<PartialState> = flow {
+        getCoinUseCase(id = id)
+            .onSuccess { complexCoin ->
+                emit(Dialog(complexCoin.toPresentationModel().toString()))
+            }.onFailure {
+                emit(Error(it))
+            }
+    }
+
+    private fun coinClicked(id: String): Flow<PartialState> {
+        return getCoin(id)
     }
 
     private fun tagClicked(tagClicked: TagDisplayable): Flow<PartialState> {
         return flow {
-            emit(PartialState.Filter(tagClicked))
+            emit(Filter(tagClicked))
+        }
+    }
+
+    private fun closeDialog(): Flow<Dialog> {
+        return flow {
+            emit(Dialog(null))
         }
     }
 }
