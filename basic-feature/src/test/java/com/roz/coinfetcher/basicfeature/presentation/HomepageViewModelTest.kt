@@ -2,6 +2,7 @@ package com.roz.coinfetcher.basicfeature.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinUseCase
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
 import com.roz.coinfetcher.basicfeature.generateTestCoinsFromDomain
 import com.roz.coinfetcher.basicfeature.generateTestTagsFromDomain
@@ -9,6 +10,7 @@ import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.RefreshHomep
 import com.roz.coinfetcher.basicfeature.presentation.mapper.toPresentationModel
 import com.roz.coinfetcher.core.utils.MainDispatcherExtension
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
@@ -31,6 +33,10 @@ class HomepageViewModelTest {
     @RelaxedMockK
     private lateinit var getHomepageDataUseCase: GetHomepageDataUseCase
 
+    @RelaxedMockK
+    private lateinit var getCoinUseCase: GetCoinUseCase
+
+
     @SpyK
     private var savedStateHandle = SavedStateHandle()
 
@@ -44,7 +50,7 @@ class HomepageViewModelTest {
     @Test
     fun `should show loading state with no error state first during init coins retrieval`() = runTest {
         // Given
-        every { getHomepageDataUseCase() } returns emptyFlow()
+        coEvery { getHomepageDataUseCase() } returns Result.success(Pair(listOf(), listOf()))
         setUpHomepageViewModel()
 
         // When
@@ -67,9 +73,7 @@ class HomepageViewModelTest {
         val testTagsFromDomain = generateTestTagsFromDomain()
         val testTagsToPresentation = testTagsFromDomain.map { it.toPresentationModel() }
 
-        every { getHomepageDataUseCase() } returns flowOf(
-            Result.success(Pair(testCoinsFromDomain, testTagsFromDomain)),
-        )
+        coEvery { getHomepageDataUseCase() } returns Result.success(Pair(testCoinsFromDomain, testTagsFromDomain))
         setUpHomepageViewModel()
 
         // When
@@ -83,6 +87,11 @@ class HomepageViewModelTest {
                 expected = testCoinsToPresentation,
                 actual = actualItem.coins,
             )
+
+            assertEquals(
+                expected = testTagsToPresentation,
+                actual = actualItem.tags,
+            )
             assertFalse(actualItem.isLoading)
             assertFalse(actualItem.isError)
         }
@@ -91,9 +100,7 @@ class HomepageViewModelTest {
     @Test
     fun `should show error state with no loading state during init coins retrieval failure`() = runTest {
         // Given
-        every { getHomepageDataUseCase() } returns flowOf(
-            Result.failure(IllegalStateException("Test error")),
-        )
+        coEvery { getHomepageDataUseCase() } returns Result.failure(IllegalStateException("Test error"))
         setUpHomepageViewModel()
 
         // When
@@ -114,9 +121,10 @@ class HomepageViewModelTest {
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
         val testCoinsToPresentation = testCoinsFromDomain.map { it.toPresentationModel() }
-        every { getHomepageDataUseCase() } returns flowOf(
-            Result.success(Pair(testCoinsFromDomain, testTagsFromDomain),
-        ) )
+        coEvery { getHomepageDataUseCase() } returns
+                Result.success(
+                    Pair(testCoinsFromDomain, testTagsFromDomain),
+                )
         setUpHomepageViewModel()
 
         // When
@@ -139,6 +147,7 @@ class HomepageViewModelTest {
     ) {
         objectUnderTest = HomepageViewModel(
             getHomepageDataUseCase,
+            getCoinUseCase,
             savedStateHandle,
             initialUiState,
         )

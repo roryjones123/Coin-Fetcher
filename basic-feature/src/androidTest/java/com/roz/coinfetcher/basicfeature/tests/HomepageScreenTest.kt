@@ -4,9 +4,12 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import com.roz.coinfetcher.basicfeature.R
 import com.roz.coinfetcher.basicfeature.data.generateTestCoinsFromPresentation
+import com.roz.coinfetcher.basicfeature.data.generateTestTagsFromPresentation
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState
 import com.roz.coinfetcher.basicfeature.presentation.composable.CoinsScreen
 import org.junit.Before
@@ -19,16 +22,17 @@ class HomepageScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private val testCoins = generateTestCoinsFromPresentation()
+    private val testTags = generateTestTagsFromPresentation()
 
     private lateinit var coinContentDescription: String
-    private lateinit var errorRefreshingMessage: String
     private lateinit var errorFetchingMessage: String
+    private val testTag = "tag test tag"
+    private val complexCoinText = "Hello I am a complex coin"
 
     @Before
     fun setUp() {
         with(composeTestRule.activity) {
             coinContentDescription = getString(R.string.coin_type)
-            errorRefreshingMessage = getString(R.string.coins_error_refreshing)
             errorFetchingMessage = getString(R.string.coins_error_fetching)
         }
     }
@@ -48,17 +52,33 @@ class HomepageScreenTest {
     }
 
     @Test
-    fun homepageScreen_whenContentAvailableAndErrorOccurs_shouldShowErrorSnackbar() {
+    fun homepageScreen_whenComplexCoinSelected_shouldShowDialog() {
         setUpComposable(
             HomepageUiState(
                 coins = testCoins,
-                isError = true,
+                complexCoin = complexCoinText
             ),
         )
 
         composeTestRule
-            .onNodeWithText(errorRefreshingMessage)
+            .onNodeWithText(complexCoinText)
             .assertExists()
+    }
+
+    @Test
+    fun homepageScreen_whenCoinsEmpty_shouldKeepTags() {
+        setUpComposable(
+            HomepageUiState(
+                coins = emptyList(),
+                tags = testTags,
+                isLoading = false,
+                isError = false
+            ),
+        )
+
+        composeTestRule
+            .onAllNodesWithTag(testTag)
+            .assertCountEquals(testTags.size)
     }
 
     @Test

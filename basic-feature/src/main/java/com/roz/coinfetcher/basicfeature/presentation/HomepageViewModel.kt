@@ -29,7 +29,7 @@ class HomepageViewModel @Inject constructor(
     private val getCoinUseCase: GetCoinUseCase,
     savedStateHandle: SavedStateHandle,
     coinsInitialState: HomepageUiState,
-) : BaseViewModel<HomepageUiState, PartialState, HomepageEvent, HomepageIntent>(
+) : BaseViewModel<HomepageUiState, PartialState, HomepageIntent>(
     savedStateHandle,
     coinsInitialState,
 ) {

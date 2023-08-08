@@ -69,17 +69,17 @@ internal fun generateTestTagsFromDomain() = listOf(
     Tag(
         name = "Bigcoins",
         id = "1",
-        coins = listOf("BTC", "ETH")
+        taggedItems = listOf("BTC", "ETH")
     ),
     Tag(
         name = "Ethereum",
         id = "2",
-        coins = listOf("ETH", "ADA")
+        taggedItems = listOf("ETH", "ADA")
     ),
     Tag(
         name = "Altcoins",
         id = "3",
-        coins = listOf("ADA", "XRP", "LTC")
+        taggedItems = listOf("ADA", "XRP", "LTC")
     )
 )
 
@@ -87,16 +87,16 @@ internal fun generateTestTagsFromPresentation() = listOf(
     TagDisplayable(
         name = "Bigcoins",
         id = "1",
-        coins = listOf("BTC", "ETH")
+        taggedItems = listOf("BTC", "ETH")
     ),
     TagDisplayable(
         name = "Ethereum",
         id = "2",
-        coins = listOf("ETH", "ADA")
+        taggedItems = listOf("ETH", "ADA")
     ),
     TagDisplayable(
         name = "Altcoins",
         id = "3",
-        coins = listOf("ADA", "XRP", "LTC")
+        taggedItems = listOf("ADA", "XRP", "LTC")
     )
 )
