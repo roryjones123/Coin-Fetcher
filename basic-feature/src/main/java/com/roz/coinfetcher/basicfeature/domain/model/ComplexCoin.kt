@@ -1,12 +1,5 @@
 package com.roz.coinfetcher.basicfeature.domain.model
 
-import com.roz.coinfetcher.basicfeature.data.remote.model.Contract
-import com.roz.coinfetcher.basicfeature.data.remote.model.Links
-import com.roz.coinfetcher.basicfeature.data.remote.model.LinksExtended
-import com.roz.coinfetcher.basicfeature.data.remote.model.Parent
-import com.roz.coinfetcher.basicfeature.data.remote.model.Team
-import com.roz.coinfetcher.basicfeature.data.remote.model.Whitepaper
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable

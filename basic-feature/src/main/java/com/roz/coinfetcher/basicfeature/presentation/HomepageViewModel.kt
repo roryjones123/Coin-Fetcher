@@ -8,6 +8,7 @@ import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.GetHomepageD
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.RefreshHomepageData
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.CoinClicked
 import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.TagClicked
+import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.DialogClosed
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Dialog
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Error
@@ -41,7 +42,7 @@ class HomepageViewModel @Inject constructor(
         is RefreshHomepageData -> getHomePageData()
         is CoinClicked -> coinClicked(intent.uri)
         is TagClicked -> tagClicked(intent.tagClicked)
-        is HomepageIntent.DialogClosed -> closeDialog()
+        is DialogClosed -> closeDialog()
     }
 
     override fun reduceUiState(
@@ -109,7 +110,7 @@ class HomepageViewModel @Inject constructor(
             }.onFailure {
                 emit(Error(it))
             }
-    }
+    }.onStart { emit(Loading) }
 
     private fun coinClicked(id: String): Flow<PartialState> {
         return getCoin(id)

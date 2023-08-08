@@ -16,8 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.window.Dialog
 import com.roz.coinfetcher.basicfeature.R
-import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent
-
+import com.roz.coinfetcher.core.design.Typography
 
 @Composable
 fun ComplexCoinDialog(complexCoin: String, onCloseClick: () -> Unit) {
@@ -36,7 +35,7 @@ fun ComplexCoinDialog(complexCoin: String, onCloseClick: () -> Unit) {
                     }
 
                     // todo properly parse coin and format this
-                    Text(text = complexCoin)
+                    Text(text = complexCoin, style = Typography.bodyMedium)
                 }
             }
         }

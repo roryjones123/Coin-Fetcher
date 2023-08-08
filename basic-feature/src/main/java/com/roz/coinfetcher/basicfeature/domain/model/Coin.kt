@@ -1,6 +1,5 @@
 package com.roz.coinfetcher.basicfeature.domain.model
 
-
 data class Coin (
     val id: String,
     val name: String,
