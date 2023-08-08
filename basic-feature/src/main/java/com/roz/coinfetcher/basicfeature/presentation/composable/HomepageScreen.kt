@@ -102,7 +102,7 @@ internal fun CoinsScreen(
                                 IconButton(
                                     onClick = { onIntent(DialogClosed) },
                                 ) {
-                                    Icon(imageVector = Icons.Outlined.Close, contentDescription = "Close icon",)
+                                    Icon(imageVector = Icons.Outlined.Close, contentDescription = "Close icon")
                                 }
 
                                 Text(text = uiState.complexCoin)
