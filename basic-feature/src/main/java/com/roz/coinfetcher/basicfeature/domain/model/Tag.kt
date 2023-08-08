@@ -3,7 +3,6 @@ package com.roz.coinfetcher.basicfeature.domain.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class Tag(
     val name: String?,
