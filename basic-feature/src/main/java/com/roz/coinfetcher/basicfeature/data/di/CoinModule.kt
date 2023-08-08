@@ -13,7 +13,6 @@ import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.TagRepository
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinUseCase
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
-import com.roz.coinfetcher.basicfeature.domain.usecase.getHomepageDataUseCase
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -38,21 +37,20 @@ internal object CoinModule {
     }
 
     @Provides
-    fun provideGetCoinsUseCase(
-        coinRepository: CoinRepository,
-        tagRepository: TagRepository
-    ): GetHomepageDataUseCase {
-        return GetHomepageDataUseCase {
-            getHomepageDataUseCase(coinRepository = coinRepository, tagRepository = tagRepository)
-        }
-    }
-
-    @Provides
     @Singleton
     fun provideGetCoinUseCase(
         coinRepository: CoinRepository,
     ): GetCoinUseCase {
         return GetCoinUseCase(coinRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetHomepageUseCase(
+        coinRepository: CoinRepository,
+        tagRepository: TagRepository,
+    ): GetHomepageDataUseCase {
+        return GetHomepageDataUseCase(coinRepository, tagRepository)
     }
 
     @Module

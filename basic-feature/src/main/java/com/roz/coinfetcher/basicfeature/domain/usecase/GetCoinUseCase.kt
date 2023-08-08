@@ -2,18 +2,18 @@ package com.roz.coinfetcher.basicfeature.domain.usecase
 
 import com.roz.coinfetcher.basicfeature.domain.model.ComplexCoin
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 class GetCoinUseCase(private val coinRepository: CoinRepository) {
-    suspend operator fun invoke(
+    operator fun invoke(
         id: String,
-    ): Result<ComplexCoin> {
-        return try {
-            val result = coinRepository.getCoin(id)
-            Result.success(result)
-        } catch (exception: Exception) {
-            Timber.tag("Times Test").e(exception, "exception")
-            Result.failure(exception)
-        }
+    ): Flow<Result<ComplexCoin>> = flow {
+        coinRepository.getCoin(id).map {
+            Result.success(it)
+        }.catch { emit(Result.failure(it)) }
     }
 }

@@ -20,6 +20,7 @@ import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
 import com.roz.coinfetcher.core.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
@@ -101,27 +102,37 @@ class HomepageViewModel @Inject constructor(
         )
     }
 
-    private fun getHomePageData(): Flow<PartialState> = flow {
-        getHomepageDataUseCase().onSuccess {
-            emit(
-                Fetched(
-                    coinList = it.first.map { it.toPresentationModel() },
-                    tagList = it.second.map { it.toPresentationModel() })
+    private fun getHomePageData(): Flow<PartialState> =
+        getHomepageDataUseCase().onStart {
+            Loading
+        }.map { response ->
+            response.fold(
+                onSuccess = { coinsAndTags ->
+                    Fetched(
+                        coinsAndTags.first.map { it.toPresentationModel() },
+                        coinsAndTags.second.map { it.toPresentationModel() })
+                },
+                onFailure = {
+                    Error(it)
+                }
             )
-        }.onFailure {
-            emit(Error(it))
         }
-    }.onStart { emit(Loading) }
 
 
-    private fun getCoin(id: String): Flow<PartialState> = flow {
-        getCoinUseCase(id = id)
-            .onSuccess { complexCoin ->
-                emit(Dialog(complexCoin.toPresentationModel().toString()))
-            }.onFailure {
-                emit(Error(it))
-            }
-    }.onStart { emit(Loading) }
+    private fun getCoin(id: String): Flow<PartialState> =
+        getCoinUseCase(id = id).onStart {
+            Loading
+        }.map { response ->
+            response.fold(
+                onSuccess = { coin ->
+                    Dialog(coin.toPresentationModel().toString())
+                },
+                onFailure = {
+                    Error(it)
+                }
+            )
+        }
+
 
     private fun coinClicked(id: String): Flow<PartialState> {
         return getCoin(id)
