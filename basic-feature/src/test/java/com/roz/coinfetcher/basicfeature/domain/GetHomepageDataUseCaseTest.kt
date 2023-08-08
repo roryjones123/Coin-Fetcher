@@ -2,9 +2,11 @@ package com.roz.coinfetcher.basicfeature.domain
 
 import app.cash.turbine.test
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
-import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinsUseCase
-import com.roz.coinfetcher.basicfeature.domain.usecase.getCoins
-import com.roz.coinfetcher.basicfeature.generateTestRocketFromDomain
+import com.roz.coinfetcher.basicfeature.domain.repository.TagRepository
+import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
+import com.roz.coinfetcher.basicfeature.domain.usecase.getHomepageDataUseCase
+import com.roz.coinfetcher.basicfeature.generateTestCoinsFromDomain
+import com.roz.coinfetcher.basicfeature.generateTestTagsFromDomain
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -17,31 +19,36 @@ import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.test.assertEquals
 
-class GetCoinsUseCaseTest {
+class GetHomepageDataUseCaseTest {
 
     @RelaxedMockK
     private lateinit var coinRepository: CoinRepository
 
-    private lateinit var objectUnderTest: GetCoinsUseCase
+    @RelaxedMockK
+    private lateinit var tagRepository: TagRepository
+
+    private lateinit var objectUnderTest: GetHomepageDataUseCase
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        setUpGetRocketsUseCase()
+        setupGetHomepageUseCase()
     }
 
     @Test
     fun `should wrap result with success if repository doesn't throw`() = runTest {
         // Given
-        val testRocketsFromDomain = listOf(generateTestRocketFromDomain())
-        coEvery { coinRepository.getCoins() } returns flowOf(testRocketsFromDomain)
+        val testCoinsFromDomain = generateTestCoinsFromDomain()
+        val testTagsFromDomain = generateTestTagsFromDomain()
+        coEvery { coinRepository.getCoins() } returns flowOf(testCoinsFromDomain)
+        coEvery { tagRepository.getTags() } returns flowOf(testTagsFromDomain)
 
         // When-Then
         objectUnderTest.invoke().test {
             val result = awaitItem()
 
             assertEquals(
-                expected = Result.success(testRocketsFromDomain),
+                expected = Result.success(Pair(testCoinsFromDomain, testTagsFromDomain)),
                 actual = result,
             )
             awaitComplete()
@@ -52,8 +59,11 @@ class GetCoinsUseCaseTest {
     fun `should retry operation if repository throws IOException`() = runTest {
         // Given
         val testException = IOException("Test message")
-        val testRocketsFromDomain = listOf(generateTestRocketFromDomain())
-        coEvery { coinRepository.getCoins() } throws testException andThen flowOf(testRocketsFromDomain)
+        val testCoinsFromDomain = generateTestCoinsFromDomain()
+        val testTagsFromDomain = generateTestTagsFromDomain()
+
+        coEvery { coinRepository.getCoins() } throws testException andThen flowOf(testCoinsFromDomain)
+        coEvery { tagRepository.getTags() } throws testException andThen flowOf(testTagsFromDomain)
 
         // When-Then
         assertThrows<IOException> {
@@ -68,7 +78,7 @@ class GetCoinsUseCaseTest {
                 val itemsResult = awaitItem()
 
                 assertEquals(
-                    expected = Result.success(testRocketsFromDomain),
+                    expected = Result.success(Pair(testCoinsFromDomain,testTagsFromDomain)),
                     actual = itemsResult,
                 )
             }
@@ -105,9 +115,9 @@ class GetCoinsUseCaseTest {
         }
     }
 
-    private fun setUpGetRocketsUseCase() {
-        objectUnderTest = GetCoinsUseCase {
-            getCoins(coinRepository)
+    private fun setupGetHomepageUseCase() {
+        objectUnderTest = GetHomepageDataUseCase {
+            getHomepageDataUseCase(coinRepository, tagRepository)
         }
     }
 }

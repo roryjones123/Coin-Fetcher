@@ -19,7 +19,10 @@ data class CoinResponse(
 
     val type: String,
     val logo: String? = null,
+
+    @SerialName("tags")
     val tags: List<Tag>? = null,
+
     val team: List<Team>? = null,
     val description: String? = null,
     val message: String? = null,

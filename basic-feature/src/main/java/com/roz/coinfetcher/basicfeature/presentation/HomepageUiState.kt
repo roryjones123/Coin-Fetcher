@@ -3,21 +3,25 @@ package com.roz.coinfetcher.basicfeature.presentation
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import com.roz.coinfetcher.basicfeature.presentation.model.CoinDisplayable
+import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
 import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class CoinsUiState(
+data class HomepageUiState(
     val isLoading: Boolean = false,
     val coins: List<CoinDisplayable> = emptyList(),
+    val tags: List<TagDisplayable> = emptyList(),
     val isError: Boolean = false,
-) : Parcelable {
+    ) : Parcelable {
 
     sealed class PartialState {
-        data object Loading : PartialState() // for simplicity: initial loading & refreshing
+        data object Loading : PartialState()
 
-        data class Fetched(val list: List<CoinDisplayable>) : PartialState()
+        data class Fetched(val coinList: List<CoinDisplayable>, val tagList: List<TagDisplayable>) : PartialState()
 
         data class Error(val throwable: Throwable) : PartialState()
+
+        data class Filter(val tagPressed: TagDisplayable) : PartialState()
     }
 }

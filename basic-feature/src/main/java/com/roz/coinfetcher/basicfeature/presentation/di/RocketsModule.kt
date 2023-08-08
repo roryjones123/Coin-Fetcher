@@ -7,8 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-import com.roz.coinfetcher.basicfeature.presentation.CoinsNavigationFactory
-import com.roz.coinfetcher.basicfeature.presentation.CoinsUiState
+import com.roz.coinfetcher.basicfeature.presentation.HomepageNavigationFactory
+import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState
 import com.roz.coinfetcher.core.navigation.NavigationFactory
 import javax.inject.Singleton
 
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 internal object CoinsViewModelModule {
 
     @Provides
-    fun provideInitialCoinsUiState(): CoinsUiState = CoinsUiState()
+    fun provideInitialCoinsUiState(): HomepageUiState = HomepageUiState()
 }
 
 @Module
@@ -27,5 +27,5 @@ internal interface CoinsSingletonModule {
     @Singleton
     @Binds
     @IntoSet
-    fun bindCoinsNavigationFactory(factory: CoinsNavigationFactory): NavigationFactory
+    fun bindCoinsNavigationFactory(factory: HomepageNavigationFactory): NavigationFactory
 }

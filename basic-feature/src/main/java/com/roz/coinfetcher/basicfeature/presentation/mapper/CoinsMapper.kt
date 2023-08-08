@@ -10,6 +10,6 @@ fun Coin.toPresentationModel() = CoinDisplayable(
     rank = rank,
     isNew = isNew,
     isActive = isActive,
-    type = type,
+    type = type
 )
 

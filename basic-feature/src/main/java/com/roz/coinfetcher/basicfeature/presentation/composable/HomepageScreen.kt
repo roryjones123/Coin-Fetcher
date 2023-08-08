@@ -16,19 +16,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.roz.coinfetcher.basicfeature.R
-import com.roz.coinfetcher.basicfeature.presentation.CoinEvent
-import com.roz.coinfetcher.basicfeature.presentation.CoinEvent.OpenWebBrowserWithDetails
-import com.roz.coinfetcher.basicfeature.presentation.CoinsIntent
-import com.roz.coinfetcher.basicfeature.presentation.CoinsIntent.RefreshCoins
-import com.roz.coinfetcher.basicfeature.presentation.CoinsIntent.CoinClicked
-import com.roz.coinfetcher.basicfeature.presentation.CoinsUiState
-import com.roz.coinfetcher.basicfeature.presentation.CoinsViewModel
+import com.roz.coinfetcher.basicfeature.presentation.HomepageEvent
+import com.roz.coinfetcher.basicfeature.presentation.HomepageEvent.OpenWebBrowserWithDetails
+import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent
+import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.RefreshHomepageData
+import com.roz.coinfetcher.basicfeature.presentation.HomepageIntent.CoinClicked
+import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState
+import com.roz.coinfetcher.basicfeature.presentation.HomepageViewModel
+import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
 import com.roz.coinfetcher.core.utils.collectWithLifecycle
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun CoinsRoute(
-    viewModel: CoinsViewModel = hiltViewModel(),
+fun HomepageRoute(
+    viewModel: HomepageViewModel = hiltViewModel(),
 ) {
     HandleEvents(viewModel.event)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -41,8 +42,8 @@ fun CoinsRoute(
 
 @Composable
 internal fun CoinsScreen(
-    uiState: CoinsUiState,
-    onIntent: (CoinsIntent) -> Unit,
+    uiState: HomepageUiState,
+    onIntent: (HomepageIntent) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -52,7 +53,7 @@ internal fun CoinsScreen(
         // TODO: migrate from accompanist to built-in pull-to-refresh when added to Material3
         SwipeRefresh(
             state = rememberSwipeRefreshState(uiState.isLoading),
-            onRefresh = { onIntent(RefreshCoins) },
+            onRefresh = { onIntent(RefreshHomepageData) },
             modifier = Modifier
                 .padding(it),
         ) {
@@ -61,6 +62,7 @@ internal fun CoinsScreen(
                     snackbarHostState = snackbarHostState,
                     uiState = uiState,
                     onCoinClick = { onIntent(CoinClicked(it)) },
+                    onTagClick = { onIntent(HomepageIntent.TagClicked(it)) }
                 )
             } else {
                 CoinsNotAvailableContent(
@@ -72,7 +74,7 @@ internal fun CoinsScreen(
 }
 
 @Composable
-private fun HandleEvents(events: Flow<CoinEvent>) {
+private fun HandleEvents(events: Flow<HomepageEvent>) {
     val uriHandler = LocalUriHandler.current
 
     events.collectWithLifecycle {
@@ -87,8 +89,9 @@ private fun HandleEvents(events: Flow<CoinEvent>) {
 @Composable
 private fun CoinsAvailableContent(
     snackbarHostState: SnackbarHostState,
-    uiState: CoinsUiState,
+    uiState: HomepageUiState,
     onCoinClick: (String) -> Unit,
+    onTagClick: (TagDisplayable) -> Unit
 ) {
     if (uiState.isError) {
         val errorMessage = stringResource(R.string.coins_error_refreshing)
@@ -102,12 +105,14 @@ private fun CoinsAvailableContent(
 
     CoinsListContent(
         coinList = uiState.coins,
+        tagList = uiState.tags,
         onCoinClick = onCoinClick,
+        onTagClick = onTagClick
     )
 }
 
 @Composable
-private fun CoinsNotAvailableContent(uiState: CoinsUiState) {
+private fun CoinsNotAvailableContent(uiState: HomepageUiState) {
     when {
         uiState.isLoading -> CoinsLoadingPlaceholder()
         uiState.isError -> CoinsErrorContent()

@@ -6,52 +6,52 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import com.roz.coinfetcher.basicfeature.R
-import com.roz.coinfetcher.basicfeature.data.generateTestRocketsFromPresentation
-import com.roz.coinfetcher.basicfeature.presentation.CoinsUiState
+import com.roz.coinfetcher.basicfeature.data.generateTestCoinsFromPresentation
+import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState
 import com.roz.coinfetcher.basicfeature.presentation.composable.CoinsScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CoinsScreenTest {
+class HomepageScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val testRockets = generateTestRocketsFromPresentation()
+    private val testCoins = generateTestCoinsFromPresentation()
 
-    private lateinit var rocketContentDescription: String
+    private lateinit var coinContentDescription: String
     private lateinit var errorRefreshingMessage: String
     private lateinit var errorFetchingMessage: String
 
     @Before
     fun setUp() {
         with(composeTestRule.activity) {
-            rocketContentDescription = getString(R.string.coin_type)
+            coinContentDescription = getString(R.string.coin_type)
             errorRefreshingMessage = getString(R.string.coins_error_refreshing)
             errorFetchingMessage = getString(R.string.coins_error_fetching)
         }
     }
 
     @Test
-    fun rocketsScreen_whenContentAvailableAndErrorOccurs_shouldKeepContent() {
+    fun homepageScreen_whenContentAvailableAndErrorOccurs_shouldKeepContent() {
         setUpComposable(
-            CoinsUiState(
-                coins = testRockets,
+            HomepageUiState(
+                coins = testCoins,
                 isError = true,
             ),
         )
 
         composeTestRule
-            .onAllNodesWithContentDescription(rocketContentDescription)
-            .assertCountEquals(testRockets.size)
+            .onAllNodesWithContentDescription(coinContentDescription)
+            .assertCountEquals(testCoins.size)
     }
 
     @Test
-    fun rocketsScreen_whenContentAvailableAndErrorOccurs_shouldShowErrorSnackbar() {
+    fun homepageScreen_whenContentAvailableAndErrorOccurs_shouldShowErrorSnackbar() {
         setUpComposable(
-            CoinsUiState(
-                coins = testRockets,
+            HomepageUiState(
+                coins = testCoins,
                 isError = true,
             ),
         )
@@ -62,9 +62,9 @@ class CoinsScreenTest {
     }
 
     @Test
-    fun rocketsScreen_whenContentNotAvailableAndErrorOccurs_shouldHaveErrorContent() {
+    fun homepageScreen_whenContentNotAvailableAndErrorOccurs_shouldHaveErrorContent() {
         setUpComposable(
-            CoinsUiState(isError = true),
+            HomepageUiState(isError = true),
         )
 
         composeTestRule
@@ -73,11 +73,11 @@ class CoinsScreenTest {
     }
 
     private fun setUpComposable(
-        coinsUiState: CoinsUiState,
+        homepageUiState: HomepageUiState,
     ) {
         composeTestRule.setContent {
             CoinsScreen(
-                uiState = coinsUiState,
+                uiState = homepageUiState,
                 onIntent = { },
             )
         }
