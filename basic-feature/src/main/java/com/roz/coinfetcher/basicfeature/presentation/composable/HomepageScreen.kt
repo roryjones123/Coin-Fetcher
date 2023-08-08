@@ -65,16 +65,16 @@ internal fun CoinsScreen(
         },
         content = { padding ->
             Column(modifier = Modifier.padding(padding)) {
-                if (uiState.coins.isNotEmpty()) {
+                if (uiState.isLoading || uiState.isError) {
+                    CoinsNotAvailableContent(
+                        uiState = uiState,
+                    )
+                } else if (uiState.coins.isNotEmpty()) {
                     CoinsAvailableContent(
                         snackbarHostState = snackbarHostState,
                         uiState = uiState,
                         onCoinClick = { onIntent(CoinClicked(it)) },
                         onTagClick = { onIntent(TagClicked(it)) }
-                    )
-                } else {
-                    CoinsNotAvailableContent(
-                        uiState = uiState,
                     )
                 }
                 if (uiState.complexCoin != null) {
@@ -125,7 +125,7 @@ private fun CoinsAvailableContent(
 @Composable
 private fun CoinsNotAvailableContent(uiState: HomepageUiState) {
     when {
-        uiState.isLoading -> CoinsLoadingPlaceholder()
-        uiState.isError -> CoinsErrorContent()
+        uiState.isLoading -> HomepageLoadingIndicator()
+        uiState.isError -> HomepageErrorContent()
     }
 }

@@ -100,7 +100,7 @@ class HomepageViewModel @Inject constructor(
         }.onFailure {
             emit(Error(it))
         }
-    }.onStart { Loading }
+    }.onStart { emit(Loading) }
 
 
     private fun getCoin(id: String): Flow<PartialState> = flow {
