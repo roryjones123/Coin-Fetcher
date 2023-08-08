@@ -2,6 +2,7 @@ package com.roz.coinfetcher.basicfeature.data.remote.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.roz.coinfetcher.basicfeature.domain.model.Tag
 
 @Serializable
 data class CoinResponse(

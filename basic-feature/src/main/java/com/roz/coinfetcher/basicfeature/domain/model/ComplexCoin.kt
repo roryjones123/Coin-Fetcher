@@ -1,31 +1,16 @@
-package com.roz.coinfetcher.basicfeature.presentation.model
+package com.roz.coinfetcher.basicfeature.domain.model
 
-import android.os.Parcelable
 import com.roz.coinfetcher.basicfeature.data.remote.model.Contract
 import com.roz.coinfetcher.basicfeature.data.remote.model.Links
 import com.roz.coinfetcher.basicfeature.data.remote.model.LinksExtended
 import com.roz.coinfetcher.basicfeature.data.remote.model.Parent
 import com.roz.coinfetcher.basicfeature.data.remote.model.Team
 import com.roz.coinfetcher.basicfeature.data.remote.model.Whitepaper
-import com.roz.coinfetcher.basicfeature.domain.model.ComplexCoin
-import com.roz.coinfetcher.basicfeature.domain.model.Tag
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
-data class CoinDisplayable(
-    val id: String,
-    val name: String,
-    val symbol: String,
-    val rank: Int,
-    val isNew: Boolean,
-    val isActive: Boolean,
-    val type: String
-) : Parcelable
-
 @Serializable
-data class ComplexCoinDisplayable(
+data class ComplexCoin(
     val id: String,
     val name: String,
     val symbol: String,
@@ -82,4 +67,3 @@ data class ComplexCoinDisplayable(
     @SerialName("last_data_at")
     val lastDataAt: String? = null
 )
-
