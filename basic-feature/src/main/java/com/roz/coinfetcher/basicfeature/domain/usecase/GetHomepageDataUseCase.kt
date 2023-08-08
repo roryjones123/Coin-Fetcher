@@ -13,7 +13,7 @@ suspend fun getHomepageDataUseCase(
     tagRepository: TagRepository
 ): Result<Pair<List<Coin>, List<Tag>>> {
     try {
-        val coins = coinRepository.getCoins()
+        val coins = coinRepository.getCoins().sortedBy { it.name }
         val tags = tagRepository.getTags()
         return Result.success(Pair(coins, tags))
     } catch (exception: Exception) {
