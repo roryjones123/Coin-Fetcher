@@ -77,8 +77,9 @@ internal fun CoinsScreen(
                         onTagClick = { onIntent(TagClicked(it)) }
                     )
                 }
+
                 if (uiState.complexCoin != null) {
-                    ComplexCoinDialog(complexCoin = uiState.complexCoin, onCloseClick = { onIntent(DialogClosed) })
+                    ComplexCoinDialog(complexCoin = uiState.complexCoin, onDialogCloseClick = { onIntent(DialogClosed) })
                 }
             }
         })

@@ -95,7 +95,9 @@ class HomepageViewModel @Inject constructor(
         )
 
         is Dialog -> previousState.copy(
-            complexCoin = partialState.complexCoin
+            complexCoin = partialState.complexCoin,
+            isLoading = false,
+            isError = false
         )
     }
 

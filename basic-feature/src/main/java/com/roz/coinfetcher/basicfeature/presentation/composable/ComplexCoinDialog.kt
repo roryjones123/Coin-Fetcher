@@ -19,8 +19,8 @@ import com.roz.coinfetcher.basicfeature.R
 import com.roz.coinfetcher.core.design.Typography
 
 @Composable
-fun ComplexCoinDialog(complexCoin: String, onCloseClick: () -> Unit) {
-    Dialog(onDismissRequest = { onCloseClick() }) {
+fun ComplexCoinDialog(complexCoin: String, onDialogCloseClick: () -> Unit) {
+    Dialog(onDismissRequest = { onDialogCloseClick() }) {
         Box(
             modifier = Modifier
                 .background(color = Color.White, shape = RoundedCornerShape(COIN_DIALOG_ROUNDNESS))
@@ -29,7 +29,7 @@ fun ComplexCoinDialog(complexCoin: String, onCloseClick: () -> Unit) {
             LazyColumn {
                 items(1) {
                     IconButton(
-                        onClick = { onCloseClick() },
+                        onClick = { onDialogCloseClick() },
                     ) {
                         Icon(imageVector = Icons.Outlined.Close, contentDescription = "Close icon")
                     }
