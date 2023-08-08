@@ -2,6 +2,7 @@ package com.roz.coinfetcher.basicfeature.presentation.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -69,31 +72,34 @@ internal fun CoinsScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
-        // TODO: migrate from accompanist to built-in pull-to-refresh when added to Material3
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(uiState.isLoading),
-            onRefresh = { onIntent(RefreshHomepageData) },
-            modifier = Modifier
-                .padding(it),
-        ) {
-            if (uiState.coins.isNotEmpty()) {
-                CoinsAvailableContent(
-                    snackbarHostState = snackbarHostState,
-                    uiState = uiState,
-                    onCoinClick = { onIntent(CoinClicked(it)) },
-                    onTagClick = { onIntent(TagClicked(it)) }
-                )
-            } else {
-                CoinsNotAvailableContent(
-                    uiState = uiState,
+        floatingActionButton = {
+            Button(onClick = { onIntent(RefreshHomepageData) })
+            {
+                Icon(
+                    imageVector = Icons.Outlined.Refresh,
+                    contentDescription = "Refresh Icon"
                 )
             }
-            if (uiState.complexCoin != null) {
-                ComplexCoinDialog(complexCoin = uiState.complexCoin, onCloseClick = { onIntent(DialogClosed) })
+        },
+        content = { padding ->
+            Column(modifier = Modifier.padding(padding)) {
+                if (uiState.coins.isNotEmpty()) {
+                    CoinsAvailableContent(
+                        snackbarHostState = snackbarHostState,
+                        uiState = uiState,
+                        onCoinClick = { onIntent(CoinClicked(it)) },
+                        onTagClick = { onIntent(TagClicked(it)) }
+                    )
+                } else {
+                    CoinsNotAvailableContent(
+                        uiState = uiState,
+                    )
+                }
+                if (uiState.complexCoin != null) {
+                    ComplexCoinDialog(complexCoin = uiState.complexCoin, onCloseClick = { onIntent(DialogClosed) })
+                }
             }
-        }
-    }
+        })
 }
 
 @Composable
