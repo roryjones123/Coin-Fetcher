@@ -4,7 +4,7 @@ import com.roz.coinfetcher.basicfeature.data.remote.model.TagResponse
 import retrofit2.http.GET
 
 interface TagApi {
-    @GET("tags/")
+    @GET("tags/?additional_fields=coins,icos")
     suspend fun getTags(): List<TagResponse>
 }
 

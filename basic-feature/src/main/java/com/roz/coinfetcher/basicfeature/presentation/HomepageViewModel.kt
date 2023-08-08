@@ -63,13 +63,22 @@ class HomepageViewModel @Inject constructor(
                 }
             }.sortedBy { !it.isSelected }
 
+            val selectedTags = tags.filter { it.isSelected }
+
+            val coins = previousState.coins.map { coin ->
+                val coinMatchesFilters = if (selectedTags.isEmpty()) {
+                    true
+                } else {
+                    selectedTags.all { selectedTag ->
+                        selectedTag.taggedItems?.contains(coin.id) == true
+                    }
+                }
+                coin.copy(isVisible = coinMatchesFilters)
+            }
+
             previousState.copy(
                 tags = tags,
-                /*coins = previousState.coins.filter { coin ->
-                    tags.any { tag ->
-                        tag.coins?.contains(coin.name) == true
-                    }
-                }*/
+                coins = coins
             )
         }
 

@@ -40,7 +40,7 @@ fun CoinsListContent(
                 ),
         ) {
             itemsIndexed(
-                items = coinList,
+                items = coinList.filter { it.isVisible == true },
                 key = { _, coin -> coin.id },
             ) { index, item ->
                 CoinItem(

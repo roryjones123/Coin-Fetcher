@@ -6,6 +6,6 @@ import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
 fun Tag.toPresentationModel() = TagDisplayable(
     id = id,
     name = name,
-    coins = coins,
-    numberOfTaggedItems = numberOfTaggedItems
+    numberOfTaggedItems = numberOfTaggedItems,
+    taggedItems = taggedItems
 )

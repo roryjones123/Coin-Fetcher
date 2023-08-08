@@ -69,7 +69,7 @@ internal fun CoinsScreen(
                     CoinsNotAvailableContent(
                         uiState = uiState,
                     )
-                } else if (uiState.coins.isNotEmpty()) {
+                } else if (uiState.coins.isNotEmpty() || uiState.tags.isNotEmpty()) {
                     CoinsAvailableContent(
                         snackbarHostState = snackbarHostState,
                         uiState = uiState,

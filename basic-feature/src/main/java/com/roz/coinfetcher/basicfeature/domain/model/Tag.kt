@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class Tag(
     val name: String?,
     val id: String?,
-    val coins: List<String>? = null,
+    // icos and coins combined for simplicity
+    val taggedItems: List<String>? = null,
     val numberOfTaggedItems: Long = 0L
 )
