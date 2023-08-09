@@ -38,7 +38,7 @@ internal fun generateTestCoinFromRemote() = CoinResponse(
 
 internal fun generateTestCoinsFromDomain() = listOf(
     Coin(
-        id = "3",
+        id = "ADA",
         name = "Cardano",
         symbol = "ADA",
         rank = 1,

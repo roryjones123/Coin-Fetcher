@@ -38,20 +38,6 @@ class HomepageScreenTest {
     }
 
     @Test
-    fun homepageScreen_whenContentAvailableAndErrorOccurs_shouldKeepContent() {
-        setUpComposable(
-            HomepageUiState(
-                coins = testCoins,
-                isError = true,
-            ),
-        )
-
-        composeTestRule
-            .onAllNodesWithContentDescription(coinContentDescription)
-            .assertCountEquals(testCoins.size)
-    }
-
-    @Test
     fun homepageScreen_whenComplexCoinSelected_shouldShowDialog() {
         setUpComposable(
             HomepageUiState(

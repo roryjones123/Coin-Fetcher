@@ -6,8 +6,10 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import com.roz.coinfetcher.basicfeature.data.di.CoinModule
 import com.roz.coinfetcher.basicfeature.data.remote.api.CoinApi
+import com.roz.coinfetcher.basicfeature.data.remote.api.TagApi
 import com.roz.coinfetcher.basicfeature.data.repository.DefaultCoinRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
+import com.roz.coinfetcher.basicfeature.domain.repository.TagRepository
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinUseCase
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
 import com.roz.coinfetcher.core.utils.resultOf
@@ -27,9 +29,9 @@ internal object FakeHomepageModule {
     @Provides
     fun provideFakeHomepageUseCase(): GetHomepageDataUseCase {
         return GetHomepageDataUseCase {
-            Result.success(
+            flowOf(Result.success(
                 Pair(generateTestCoinsFromDomain(), generateTestTagsFromDomain()),
-            )
+            ))
         }
     }
 

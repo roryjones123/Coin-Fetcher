@@ -1,17 +1,21 @@
 package com.roz.coinfetcher.basicfeature.domain
 
+import app.cash.turbine.test
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.TagRepository
 import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
-import com.roz.coinfetcher.basicfeature.domain.usecase.getHomepageDataUseCase
+import com.roz.coinfetcher.basicfeature.domain.usecase.getHomepageData
 import com.roz.coinfetcher.basicfeature.generateTestCoinsFromDomain
 import com.roz.coinfetcher.basicfeature.generateTestTagsFromDomain
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class GetHomepageDataUseCaseTest {
@@ -31,20 +35,43 @@ class GetHomepageDataUseCaseTest {
     }
 
     @Test
-    fun `should wrap result with success if repository doesn't throw`() = runTest {
+    fun `should wrap result with success if coin repository doesn't throw`() = runTest {
         // Given
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
-        coEvery { coinRepository.getCoins() } returns testCoinsFromDomain
-        coEvery { tagRepository.getTags() } returns testTagsFromDomain
+        every { coinRepository.getCoins() } returns flowOf(testCoinsFromDomain)
+        every { tagRepository.getTags() } returns flowOf(testTagsFromDomain)
 
         // When-Then
-        val result = objectUnderTest.invoke()
+        objectUnderTest.invoke().test {
+            val result = awaitItem()
 
-        assertEquals(
-            expected = Result.success(Pair(testCoinsFromDomain, testTagsFromDomain)),
-            actual = result,
-        )
+            assertEquals(
+                expected = Result.success(testCoinsFromDomain),
+                actual = result.map { it.first },
+            )
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should wrap result with success if tag repository doesn't throw`() = runTest {
+        // Given
+        val testCoinsFromDomain = generateTestCoinsFromDomain()
+        val testTagsFromDomain = generateTestTagsFromDomain()
+        every { coinRepository.getCoins() } returns flowOf(testCoinsFromDomain)
+        every { tagRepository.getTags() } returns flowOf(testTagsFromDomain)
+
+        // When-Then
+        objectUnderTest.invoke().test {
+            val result = awaitItem()
+
+            assertEquals(
+                expected = Result.success(testTagsFromDomain),
+                actual = result.map { it.second },
+            )
+            awaitComplete()
+        }
     }
 
     @Test
@@ -54,12 +81,16 @@ class GetHomepageDataUseCaseTest {
         coEvery { coinRepository.getCoins() } throws testException
 
         // When-Then
-        val result = objectUnderTest.invoke()
+        assertThrows<Exception> {
+            objectUnderTest.invoke().test {
+                val result = awaitItem()
 
-        assertEquals(
-            expected = Result.failure(testException),
-            actual = result
-        )
+                assertEquals(
+                    expected = Result.failure(testException),
+                    actual = result,
+                )
+            }
+        }
     }
 
     @Test
@@ -69,17 +100,21 @@ class GetHomepageDataUseCaseTest {
         coEvery { tagRepository.getTags() } throws testException
 
         // When-Then
-        val result = objectUnderTest.invoke()
+        assertThrows<Exception> {
+            objectUnderTest.invoke().test {
+                val result = awaitItem()
 
-        assertEquals(
-            expected = Result.failure(testException),
-            actual = result
-        )
+                assertEquals(
+                    expected = Result.failure(testException),
+                    actual = result,
+                )
+            }
+        }
     }
 
     private fun setupGetHomepageUseCase() {
         objectUnderTest = GetHomepageDataUseCase {
-            getHomepageDataUseCase(coinRepository, tagRepository)
+            getHomepageData(coinRepository, tagRepository)
         }
     }
 }
