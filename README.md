@@ -5,56 +5,90 @@ considering me for the position.
 
 ## **Preface**
 
-As a heads up - I am using one of a few skeletons that I use for personal projects and take-home exercises. 
-I don’t believe that setting up DI/Modules/Packages/Navigation every single time I start a small-to-mid-size project is
-a good practise, there is a lot of repetition in boiler plate (as it will end up being identical to one of these skeletons
-in most cases) so instead I will justify why I made the choice of skeleton: ie why I chose the architecture that I chose 
-and would behappy to discuss these choices further. I will also build upon this choice.
-
-In addition to this, this gives me a freedom to demonstrate:
-
-1. One of the main issues of some concepts in this code (ie clean architecture) is slightly longer setup, which is 
-   contradictory to the spec.
-    1. This is offset by the fact I have skeletons available, which eliminates the boiler plate setup/module setup.
-   
-2. The spec has tight focus. It has one/two screens and two calls. Complexity is unnecessary especially as the benefits of adhering to Clean/Solid are demonstrated in monolithic projects, not very small projects.
-    1. I believe it is important to demonstrate what I see as important in a larger more complex project like the Times or my previous roles/projects, the ideologies that have helped keep code decoupled, testable, maintainable.
-
-So because setup is quick + I think important to represent what I’ve been learning and seeing is good in larger 
-production projects, I have decided on showcasing some of the aforementioned concepts (like clean/SOLID). It also is
-a good opportunity for me to practise and refresh my knowledge :)
-
-## **Decisions**
+This code involves some setup for modules/DI from a template to reduce the time I had to spend on it.
 
 ### **Clean/Solid Architecture**
 
-### **DI**
+This code attempts to adhere to Clean/SOLID architecture, to decouple, improve maintainability, testability  
+and so on, separating the code  between three layers: 
+
+1) data
+2) domain
+3) presentation
+
+While also using a series of mapper/DO's to prevent any overlapping. Use cases use to further adhere to Clean/Solid
+and separate some logic from the VM's.
+
+### **Modules**
+
+Modules broken down to provide scalability/maintainability.  
+
+1) app
+
+Main Application entry point to app, plus database.
+
+2) basic feature
+
+Handles logic for the features, including a presentation/domain/data package for separation of key logic according to 
+Clean/SOLID
+
+3) core
+
+Some more basic elements to be shared accross the app, such as navigation, base view models, networking. Could be later 
+broken down into more modules to adhere to better practise.
+
+### **Hilt DI**
+
+This is for me a more subjective choice due to the simplicity of setup and use + size of project.
+
+### **Flows**
+
+Kotlin flows used to handle the data from the API's, helps handle different intents like loading and opens up an easy
+way of handling caching if added later.
 
 ### **Caching**
 
+Originally I planned on including caching, but removed for simplicities sake. Some of the original DB setup is still
+in the code as I might flesh it out at a later date.
+
+### **Tests**
+
+Tests have been setup to cover VM/UseCase/Compose elements. Some of the VM tests currently fail ATM due to a
+misunderstanding on how they're being tested against the thread after making sorting of coins against filters not
+run on main thread.
+
 ### **Description of Application**
-Application connects to paprika and lists crypto coins. 
+Application connects to paprika and lists crypto coins and tags. 
 
-Data always comes from the local persistence (offline-first approach) and updates when necessary.
+Clicking on each item navigates to a dialog with more information on the coin.
 
-Clicking on each item navigates to a page with more information on the coin.
+Press refresh button to refresh downloaded data.
 
-Use swipe-down gesture to refresh downloaded data.
+Press filter to filter the cryptocurrencies by those that have the tag selected.
 
-Supports light/dark mode.
+## **TODO at later stage**:
+
+1. **VM TEST DISPATCHER BUG**
+   2. VM tests all worked until I changed intent handling to io thread due to heavy sort load, need to check this ASAP
+   but spent a lot of time on this project already.
+2. Provide proper mapping for different error types
+3. Provide more logging
+4. Remove some VM logic, especially intent logic for filtering
+5. Clean up ui
+   1. Change filters to a drop down or some other way of being things more clearly
+   2. Scrolling functionality
+   3. Add proper screen for complex coin
+6. Provide proper data objects for information in the Coin at all appropriate levels.
+7. Flesh out local DB and re-add caching, create appropriately normalised tables.
+   1. Tags
+   2. Complex Coin Data
+   3. Coin Data
+8. Properly handle complex coin and coin, ie investigate better way of handling
+9. Write more tests
+   1. Dialog
+   2. Get Coin use case
+   3. Expand UI tests
+   4. Test mapper (technically already tested through vm)
+10. Find better way to scroll dialog
 
 
-## **TODO**
-
-Todo:
-
-1. Sort tests
-2. Improve caching
-3. Change refresh to an icon due to large list types
-4. Filter by tag option
-5. Animate list items
-6. Add click
-7. Add logger
-8. Sealed error classes (?)
-9. Better implementation names to abide by best practises
-10. And more
