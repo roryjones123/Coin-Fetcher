@@ -162,6 +162,8 @@ class HomepageViewModelTest {
         // Given
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
+        val testCoinsToPresentation = testCoinsFromDomain.map { it.toPresentationModel() }
+        val testTagsToPresentation = testTagsFromDomain.map { it.toPresentationModel() }
         every { getHomepageDataUseCase() } returns flowOf(
             Result.success(Pair(testCoinsFromDomain, testTagsFromDomain))
         )
@@ -169,7 +171,7 @@ class HomepageViewModelTest {
         val testTag = testTagsFromDomain.find { it.id == TEST_TAG_VALUE }?.toPresentationModel() ?: return@runTest
 
         // When
-        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag))
+        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag, testCoinsToPresentation, testTagsToPresentation))
 
         // Then
         objectUnderTest.uiState.test {
@@ -188,6 +190,8 @@ class HomepageViewModelTest {
         // Given
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
+        val testCoinsToPresentation = testCoinsFromDomain.map { it.toPresentationModel() }
+        val testTagsToPresentation = testTagsFromDomain.map { it.toPresentationModel() }
         every { getHomepageDataUseCase() } returns flowOf(
             Result.success(Pair(testCoinsFromDomain, testTagsFromDomain))
         )
@@ -195,7 +199,7 @@ class HomepageViewModelTest {
         val testTag = testTagsFromDomain.find { it.id == TEST_TAG_VALUE }?.toPresentationModel() ?: return@runTest
 
         // When
-        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag))
+        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag, testCoinsToPresentation, testTagsToPresentation))
 
         // Then
         objectUnderTest.uiState.test {
@@ -214,6 +218,8 @@ class HomepageViewModelTest {
         // Given
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
+        val testCoinsToPresentation = testCoinsFromDomain.map { it.toPresentationModel() }
+        val testTagsToPresentation = testTagsFromDomain.map { it.toPresentationModel() }
         every { getHomepageDataUseCase() } returns flowOf(
             Result.success(Pair(testCoinsFromDomain, testTagsFromDomain))
         )
@@ -221,7 +227,7 @@ class HomepageViewModelTest {
         val testTag = testTagsFromDomain.find { it.id == TEST_TAG_VALUE }?.toPresentationModel() ?: return@runTest
 
         // When
-        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag))
+        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag, testCoinsToPresentation, testTagsToPresentation))
 
         // Then
         objectUnderTest.uiState.test {
@@ -237,6 +243,8 @@ class HomepageViewModelTest {
         // Given
         val testCoinsFromDomain = generateTestCoinsFromDomain()
         val testTagsFromDomain = generateTestTagsFromDomain()
+        val testCoinsToPresentation = testCoinsFromDomain.map { it.toPresentationModel() }
+        val testTagsToPresentation = testTagsFromDomain.map { it.toPresentationModel() }
         every { getHomepageDataUseCase() } returns flowOf(
             Result.success(Pair(testCoinsFromDomain, testTagsFromDomain))
         )
@@ -244,8 +252,8 @@ class HomepageViewModelTest {
         val testTag = testTagsFromDomain.find { it.id == TEST_TAG_VALUE }?.toPresentationModel() ?: return@runTest
 
         // When
-        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag))
-        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag))
+        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag, testCoinsToPresentation, testTagsToPresentation))
+        objectUnderTest.acceptIntent(HomepageIntent.TagClicked(testTag, testCoinsToPresentation, testTagsToPresentation))
 
         // Then
         objectUnderTest.uiState.test {

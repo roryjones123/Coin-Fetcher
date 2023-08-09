@@ -36,17 +36,15 @@ abstract class BaseViewModel<UI_STATE : Parcelable, PARTIAL_UI_STATE, INTENT>(
 
     init {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                merge(
-                    userIntents(),
-                    continuousFlows(),
-                )
-                    .scan(uiState.value, ::reduceUiState)
-                    .catch { Timber.e(it) }
-                    .collect {
-                        savedStateHandle[SAVED_UI_STATE_KEY] = it
-                    }
-            }
+            merge(
+                userIntents(),
+                continuousFlows(),
+            )
+                .scan(uiState.value, ::reduceUiState)
+                .catch { Timber.e(it) }
+                .collect {
+                    savedStateHandle[SAVED_UI_STATE_KEY] = it
+                }
         }
     }
 

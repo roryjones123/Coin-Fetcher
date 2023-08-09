@@ -17,7 +17,7 @@ object ApplyFilterUtil {
         return previousState.copy(tags = tags, coins = coins)
     }
 
-    private fun mapTags(tags: List<TagDisplayable>, tagPressed: TagDisplayable): List<TagDisplayable> {
+    fun mapTags(tags: List<TagDisplayable>, tagPressed: TagDisplayable): List<TagDisplayable> {
         return tags.map { tag ->
             if (tag == tagPressed) {
                 tag.copy(isSelected = !tag.isSelected)
@@ -27,11 +27,11 @@ object ApplyFilterUtil {
         }.sortedByDescending { it.isSelected }
     }
 
-    private fun filterSelectedTags(tags: List<TagDisplayable>): List<TagDisplayable> {
+    fun filterSelectedTags(tags: List<TagDisplayable>): List<TagDisplayable> {
         return tags.filter { it.isSelected }
     }
 
-    private fun mapCoins(coins: List<CoinDisplayable>, selectedTags: List<TagDisplayable>): List<CoinDisplayable> {
+    fun mapCoins(coins: List<CoinDisplayable>, selectedTags: List<TagDisplayable>): List<CoinDisplayable> {
         return coins.map { coin ->
             val coinMatchesFilters = if (selectedTags.isEmpty()) {
                 true

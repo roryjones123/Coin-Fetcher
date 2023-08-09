@@ -64,7 +64,7 @@ internal fun CoinsScreen(
                     CoinsAvailableContent(
                         uiState = uiState,
                         onCoinClick = { onIntent(CoinClicked(it)) },
-                        onTagClick = { onIntent(TagClicked(it)) }
+                        onTagClick = { onIntent(TagClicked(tagClicked = it, coins = uiState.coins, tags = uiState.tags)) }
                     )
                 }
 

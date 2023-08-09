@@ -14,7 +14,7 @@ data class HomepageUiState(
     val tags: List<TagDisplayable> = emptyList(),
     val isError: Boolean = false,
     val complexCoin: String? = null
-    ) : Parcelable {
+) : Parcelable {
 
     sealed class PartialState {
         data object Loading : PartialState()
@@ -23,7 +23,11 @@ data class HomepageUiState(
 
         data class Error(val throwable: Throwable) : PartialState()
 
-        data class Filter(val tagPressed: TagDisplayable) : PartialState()
+        data class Filter(
+            val tagPressed: TagDisplayable,
+            val filteredCoins: List<CoinDisplayable>,
+            val filteredTags: List<TagDisplayable>
+        ) : PartialState()
 
         data class Dialog(val complexCoin: String?) : PartialState()
     }
