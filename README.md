@@ -57,6 +57,9 @@ Tests have been setup to cover VM/UseCase/Compose elements. Some of the VM tests
 misunderstanding on how they're being tested against the thread after making sorting of coins against filters not
 run on main thread.
 
+**Potential fix now added in PR https://github.com/roryjones123/Coin-Fetcher/pull/5**
+
+
 ### **Description of Application**
 Application connects to paprika and lists crypto coins and tags. 
 
@@ -70,7 +73,7 @@ Press filter to filter the cryptocurrencies by those that have the tag selected.
 
 1. **VM TEST DISPATCHER BUG**
    VM tests all worked until I changed intent handling to io thread due to heavy sort load, need to check this ASAP
-   but spent a lot of time on this project already.
+   but spent a lot of time on this project already. **Potential fix now added in PR https://github.com/roryjones123/Coin-Fetcher/pull/5**
 2. Provide proper mapping for different error types
 3. Provide more logging
 4. Remove some VM logic, especially intent logic for filtering
