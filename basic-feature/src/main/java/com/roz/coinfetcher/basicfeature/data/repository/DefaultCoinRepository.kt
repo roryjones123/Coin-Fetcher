@@ -13,7 +13,7 @@ import javax.inject.Inject
 class DefaultCoinRepository @Inject constructor(
     private val coinApi: CoinApi
 ) : CoinRepository {
-    override suspend fun getCoins(): Flow<List<Coin>> = flow { coinApi.getCoins().map { it.toDomainModel() } }
+    override fun getCoins(): Flow<List<Coin>> = flow { emit(coinApi.getCoins().map { it.toDomainModel() }) }
 
-    override suspend fun getCoin(id: String): Flow<ComplexCoin> = flow { coinApi.getCoin(id).toComplexDomainModel() }
+    override fun getCoin(id: String): Flow<ComplexCoin> = flow { emit(coinApi.getCoin(id).toComplexDomainModel()) }
 }

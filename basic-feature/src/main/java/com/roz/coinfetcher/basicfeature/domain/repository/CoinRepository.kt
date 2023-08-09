@@ -5,6 +5,6 @@ import com.roz.coinfetcher.basicfeature.domain.model.ComplexCoin
 import kotlinx.coroutines.flow.Flow
 
 interface CoinRepository {
-    suspend fun getCoins(): Flow<List<Coin>>
-    suspend fun getCoin(id: String): Flow<ComplexCoin>
+    fun getCoins(): Flow<List<Coin>>
+    fun getCoin(id: String): Flow<ComplexCoin>
 }

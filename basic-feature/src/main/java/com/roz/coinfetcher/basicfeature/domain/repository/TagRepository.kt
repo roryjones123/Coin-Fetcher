@@ -4,5 +4,5 @@ import com.roz.coinfetcher.basicfeature.domain.model.Tag
 import kotlinx.coroutines.flow.Flow
 
 interface TagRepository {
-    suspend fun getTags(): Flow<List<Tag>>
+    fun getTags(): Flow<List<Tag>>
 }

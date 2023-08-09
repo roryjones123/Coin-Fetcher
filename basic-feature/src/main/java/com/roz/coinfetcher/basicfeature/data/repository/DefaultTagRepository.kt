@@ -11,5 +11,5 @@ import javax.inject.Inject
 class DefaultTagRepository @Inject constructor(
     private val tagApi: TagApi
 ) : TagRepository {
-    override suspend fun getTags(): Flow<List<Tag>> = flow {tagApi.getTags().map { it.toDomainModel() }}
+    override fun getTags(): Flow<List<Tag>> = flow { emit(tagApi.getTags().map { it.toDomainModel() }) }
 }

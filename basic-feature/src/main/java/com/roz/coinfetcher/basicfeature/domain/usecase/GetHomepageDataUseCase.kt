@@ -15,37 +15,32 @@ import java.io.IOException
 
 private const val RETRY_TIME_IN_MILLIS = 15000L
 
-class GetHomepageDataUseCase(
-    private val coinRepository: CoinRepository,
-    private val tagRepository: TagRepository
-) {
-    operator fun invoke(): Flow<Result<Pair<List<Coin>, List<Tag>>>> = flow {
-        val coinsFlow = coinRepository.getCoins()
-            .map { Result.success(it) }
-            .retryWhen { cause, attempt ->
-                if (cause is IOException) {
-                    delay(RETRY_TIME_IN_MILLIS)
-                    true
-                } else {
-                    false
-                }
-            }
-            .catch { emit(Result.failure(it)) }
+fun interface GetHomepageDataUseCase : () -> Flow<Result<Pair<List<Coin>, List<Tag>>>>
 
-        val tagsFlow = tagRepository.getTags()
-            .map { Result.success(it) }
-            .retryWhen { cause, attempt ->
-                if (cause is IOException) {
-                    delay(RETRY_TIME_IN_MILLIS)
-                    true
-                } else {
-                    false
-                }
-            }
-            .catch { emit(Result.failure(it)) }
-
-        coinsFlow.combine(tagsFlow) { coins, tags ->
-            Result.success(Pair(coins.getOrThrow(), tags.getOrThrow()))
+fun getHomepageData(
+    coinRepository: CoinRepository,
+    tagRepository: TagRepository
+): Flow<Result<Pair<List<Coin>, List<Tag>>>> = coinRepository
+    .getCoins()
+    .map { Result.success(it) }
+    .retryWhen { cause, attempt ->
+        if (cause is IOException) {
+            delay(RETRY_TIME_IN_MILLIS)
+            true
+        } else {
+            false
         }
     }
-}
+    .catch { emit(Result.failure(it)) }.combine(tagRepository.getTags()
+        .map { Result.success(it) }
+        .retryWhen { cause, attempt ->
+            if (cause is IOException) {
+                delay(RETRY_TIME_IN_MILLIS)
+                true
+            } else {
+                false
+            }
+        }
+        .catch { emit(Result.failure(it)) }) { coins, tags ->
+        Result.success(Pair(coins.getOrThrow(), tags.getOrThrow()))
+    }

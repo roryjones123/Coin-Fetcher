@@ -17,11 +17,13 @@ import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialStat
 import com.roz.coinfetcher.basicfeature.presentation.HomepageUiState.PartialState.Filter
 import com.roz.coinfetcher.basicfeature.presentation.mapper.toPresentationModel
 import com.roz.coinfetcher.basicfeature.presentation.model.TagDisplayable
+import com.roz.coinfetcher.basicfeature.presentation.utils.ApplyFilterUtil
 import com.roz.coinfetcher.core.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,7 +43,7 @@ class HomepageViewModel @Inject constructor(
     override fun mapIntents(intent: HomepageIntent): Flow<PartialState> = when (intent) {
         is GetHomepageData -> getHomePageData()
         is RefreshHomepageData -> getHomePageData()
-        is CoinClicked -> coinClicked(intent.uri)
+        is CoinClicked -> coinClicked(intent.id)
         is TagClicked -> tagClicked(intent.tagClicked)
         is DialogClosed -> closeDialog()
     }
@@ -56,31 +58,7 @@ class HomepageViewModel @Inject constructor(
         )
 
         is Filter -> {
-            val tags = previousState.tags.map { tag ->
-                if (tag == partialState.tagPressed) {
-                    tag.copy(isSelected = !tag.isSelected)
-                } else {
-                    tag
-                }
-            }.sortedBy { !it.isSelected }
-
-            val selectedTags = tags.filter { it.isSelected }
-
-            val coins = previousState.coins.map { coin ->
-                val coinMatchesFilters = if (selectedTags.isEmpty()) {
-                    true
-                } else {
-                    selectedTags.all { selectedTag ->
-                        selectedTag.taggedItems?.contains(coin.id) == true
-                    }
-                }
-                coin.copy(isVisible = coinMatchesFilters)
-            }
-
-            previousState.copy(
-                tags = tags,
-                coins = coins
-            )
+            ApplyFilterUtil.applyFilters(previousState, partialState)
         }
 
         is Fetched -> previousState.copy(
@@ -103,26 +81,23 @@ class HomepageViewModel @Inject constructor(
     }
 
     private fun getHomePageData(): Flow<PartialState> =
-        getHomepageDataUseCase().onStart {
-            Loading
-        }.map { response ->
+        getHomepageDataUseCase().map { response ->
             response.fold(
                 onSuccess = { coinsAndTags ->
                     Fetched(
-                        coinsAndTags.first.map { it.toPresentationModel() },
+                        coinsAndTags.first.map { it.toPresentationModel() }.sortedBy { it.name },
                         coinsAndTags.second.map { it.toPresentationModel() })
                 },
                 onFailure = {
                     Error(it)
                 }
             )
+        }.onStart {
+            emit(Loading)
         }
 
-
     private fun getCoin(id: String): Flow<PartialState> =
-        getCoinUseCase(id = id).onStart {
-            Loading
-        }.map { response ->
+        getCoinUseCase(id = id).map { response ->
             response.fold(
                 onSuccess = { coin ->
                     Dialog(coin.toPresentationModel().toString())
@@ -131,6 +106,8 @@ class HomepageViewModel @Inject constructor(
                     Error(it)
                 }
             )
+        }.onStart {
+            emit(Loading)
         }
 
 

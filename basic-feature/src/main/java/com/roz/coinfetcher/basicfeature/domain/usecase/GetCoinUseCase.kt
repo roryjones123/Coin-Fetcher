@@ -11,9 +11,10 @@ import timber.log.Timber
 class GetCoinUseCase(private val coinRepository: CoinRepository) {
     operator fun invoke(
         id: String,
-    ): Flow<Result<ComplexCoin>> = flow {
+    ): Flow<Result<ComplexCoin>> =
         coinRepository.getCoin(id).map {
             Result.success(it)
-        }.catch { emit(Result.failure(it)) }
-    }
+        }.catch {
+            emit(Result.failure(it))
+        }
 }
