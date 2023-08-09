@@ -2,6 +2,7 @@ package com.roz.coinfetcher.basicfeature.data.remote.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.roz.coinfetcher.basicfeature.domain.model.Tag
 
 @Serializable
 data class CoinResponse(
@@ -19,7 +20,10 @@ data class CoinResponse(
 
     val type: String,
     val logo: String? = null,
+
+    @SerialName("tags")
     val tags: List<Tag>? = null,
+
     val team: List<Team>? = null,
     val description: String? = null,
     val message: String? = null,

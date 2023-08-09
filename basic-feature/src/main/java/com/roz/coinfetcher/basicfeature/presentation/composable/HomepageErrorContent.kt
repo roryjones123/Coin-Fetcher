@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.roz.coinfetcher.basicfeature.R
 
 @Composable
-fun CoinsErrorContent(
+fun HomepageErrorContent(
     modifier: Modifier = Modifier,
 ) {
     Box(

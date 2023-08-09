@@ -11,5 +11,7 @@ data class CoinDisplayable(
     val rank: Int,
     val isNew: Boolean,
     val isActive: Boolean,
-    val type: String
+    val type: String,
+    val isVisible: Boolean? = true
 ) : Parcelable
+

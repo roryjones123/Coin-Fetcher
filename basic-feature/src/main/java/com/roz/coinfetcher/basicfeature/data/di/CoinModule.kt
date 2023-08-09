@@ -6,12 +6,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import com.roz.coinfetcher.basicfeature.data.remote.api.CoinApi
-import com.roz.coinfetcher.basicfeature.data.repository.CoinRepositoryImpl
+import com.roz.coinfetcher.basicfeature.data.remote.api.TagApi
+import com.roz.coinfetcher.basicfeature.data.repository.DefaultCoinRepository
+import com.roz.coinfetcher.basicfeature.data.repository.DefaultTagRepository
 import com.roz.coinfetcher.basicfeature.domain.repository.CoinRepository
-import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinsUseCase
-import com.roz.coinfetcher.basicfeature.domain.usecase.RefreshCoinsUseCase
-import com.roz.coinfetcher.basicfeature.domain.usecase.getCoins
-import com.roz.coinfetcher.basicfeature.domain.usecase.refreshCoins
+import com.roz.coinfetcher.basicfeature.domain.repository.TagRepository
+import com.roz.coinfetcher.basicfeature.domain.usecase.GetCoinUseCase
+import com.roz.coinfetcher.basicfeature.domain.usecase.GetHomepageDataUseCase
+import com.roz.coinfetcher.basicfeature.domain.usecase.getHomepageData
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -28,20 +30,28 @@ internal object CoinModule {
     }
 
     @Provides
-    fun provideGetCoinsUseCase(
-        coinRepository: CoinRepository,
-    ): GetCoinsUseCase {
-        return GetCoinsUseCase {
-            getCoins(coinRepository)
-        }
+    @Singleton
+    fun provideTagApi(
+        retrofit: Retrofit,
+    ): TagApi {
+        return retrofit.create(TagApi::class.java)
     }
 
     @Provides
-    fun provideRefreshCoinsUseCase(
+    @Singleton
+    fun provideGetCoinUseCase(
         coinRepository: CoinRepository,
-    ): RefreshCoinsUseCase {
-        return RefreshCoinsUseCase {
-            refreshCoins(coinRepository)
+    ): GetCoinUseCase {
+        return GetCoinUseCase(coinRepository)
+    }
+
+    @Provides
+    fun provideGetHomepageData(
+        coinRepository: CoinRepository,
+        tagRepository: TagRepository
+    ): GetHomepageDataUseCase {
+        return GetHomepageDataUseCase {
+            getHomepageData(coinRepository, tagRepository)
         }
     }
 
@@ -51,6 +61,10 @@ internal object CoinModule {
 
         @Binds
         @Singleton
-        fun bindCoinRepository(impl: CoinRepositoryImpl): CoinRepository
+        fun bindCoinRepository(defaultCoinRepo: DefaultCoinRepository): CoinRepository
+
+        @Binds
+        @Singleton
+        fun bindTagRepository(defaultTagRepo: DefaultTagRepository): TagRepository
     }
 }
