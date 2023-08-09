@@ -69,7 +69,7 @@ Press filter to filter the cryptocurrencies by those that have the tag selected.
 ## **TODO at later stage**:
 
 1. **VM TEST DISPATCHER BUG**
-   2. VM tests all worked until I changed intent handling to io thread due to heavy sort load, need to check this ASAP
+   VM tests all worked until I changed intent handling to io thread due to heavy sort load, need to check this ASAP
    but spent a lot of time on this project already.
 2. Provide proper mapping for different error types
 3. Provide more logging
