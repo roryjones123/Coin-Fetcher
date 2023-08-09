@@ -27,6 +27,7 @@ fun ComplexCoinDialog(complexCoin: String, onDialogCloseClick: () -> Unit) {
                 .padding(dimensionResource(id = R.dimen.dimen_medium))
         ) {
             LazyColumn {
+                // todo hacky workaround, is better way?
                 items(1) {
                     IconButton(
                         onClick = { onDialogCloseClick() },
