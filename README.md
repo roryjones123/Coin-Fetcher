@@ -56,7 +56,7 @@ Clicking on each item navigates to a dialog with more information on the coin.
 
 Press refresh button to refresh downloaded data.
 
-Press filter to filter the cryptocurrencies by those that have the tag selected.
+Press tags to filter the cryptocurrencies by those that have the tag selected.
 
 ## **TODO at later stage**:
 
