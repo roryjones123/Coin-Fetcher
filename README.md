@@ -1,73 +1,106 @@
-# **Coin Fetcher**
+<div align="center">
 
-This is a cryptocurrency app that demonstrates Clean/MVI architecture. It also includes Hilt DI, Compose navigation, UI testing.
+# 🪙 **Coin Fetcher** 🪙
 
-### **Clean/Solid Architecture**
+_An elegant cryptocurrency app showcasing Clean/MVI architecture with a splash of Hilt DI, Compose navigation, and comprehensive UI testing._
 
-This code attempts to adhere to Clean/SOLID architecture, to decouple, improve maintainability, testability  
-and so on, separating the code  between three layers: 
+</div>
 
-1) data
-2) domain
-3) presentation
+---
 
-While also using a series of mapper/DO's to prevent any overlapping. 
+## 🏗 **Architecture: Clean/SOLID**
 
-### **Modules**
+Our codebase aligns with the Clean/SOLID architecture principles. This ensures:
 
-Modules broken down to provide scalability/maintainability.  
+- **Decoupling** for modular design
+- Improved **maintainability**
+- Enhanced **testability**
 
-1) app
+The code is segregated across three distinct layers:
 
-Android framework components
+1. **Data Layer**: Source of truth for data
+2. **Domain Layer**: Business logic resides here
+3. **Presentation Layer**: UI/UX elements and controls
 
-2) basic features
+We've incorporated mappers/DO's to prevent potential overlaps between these layers.
 
-Handles logic for the features, including a presentation/domain/data package for separation of key logic according to 
-Clean/SOLID
+---
 
-3) core
+## 📦 **Modules**
 
-Some more basic elements to be shared accross the app, such as navigation, base view models, networking. Could be later 
-broken down into more modules to adhere to better practise.
+For optimal scalability and maintainability, our modules are:
 
-### **Hilt DI**
+1. **App**:
+   - Houses the Android framework components.
 
-Hilt has been chosen for the ease of setup, for injecting our dependencies. Depenency injections allows us to remove the dependency from the implementation of the dependency. 
+2. **Basic Features**:
+   - Manages the logic for features.
+   - Contains presentation, domain, and data packages for a clear separation, aligned with Clean/SOLID principles.
 
-The framework allows us to reduce the boiler plate required by manual DI, help us simplify the relationship between complex objects and control the creation of the object.
+3. **Core**:
+   - Offers basic elements like navigation, base view models, and networking.
+   - Designed for potential modular expansion in the future for best practices.
 
-### **Flows**
+---
 
-Kotlin flows used to handle the data from the API/DAO's, through to its expression in the user interface as a state. Why not live data?
+## 💉 **Hilt DI**
 
-Flows provide great integration with compose, with collectAsState giving easily lifecycle aware flows - and the state driven approaches of both meshing together well (ie state change emitted by flow, appropriate ui state update reflected in Compose)
+**Hilt** is our chosen framework for dependency injection due to:
 
-On top of this, Flows provide backpressure handling in the case our UI becomes overwhelmed downstream + great built-in functions for handling things such as transformations or errors.
+- Its easy setup.
+- Removing dependencies from their implementations.
+- Reducing boilerplate compared to manual DI.
+- Simplifying object relationships and lifecycle management.
 
-### **Tests**
+---
 
-Tests have been setup to cover VM/UseCase/Compose elements. This includes user interface tests that test the individual composables and entire screens.
+## 🌊 **Flows**
 
-### **Description of Application**
-Application connects to paprika and lists crypto coins and tags. 
+We employ **Kotlin Flows** to channel data from our API/DAO's to the UI. Why not LiveData?
 
-Clicking on each item navigates to a dialog with more information on the coin.
+- **Compose Integration**: `collectAsState` ensures lifecycle-aware flows.
+- **Backpressure**: Flows gracefully handle overwhelming UI demands.
+- **Built-in Functionalities**: Effortless error handling and transformations.
 
-Press refresh button to refresh downloaded data.
+---
 
-Press tags to filter the cryptocurrencies by those that have the tag selected.
+## 🧪 **Tests**
 
-## **TODO at later stage**:
+Our testing suite covers:
 
-1) Add screen for coin
-   1) pass coin id value 
-   2) run fetch
-   3) display data
-2) integrate cache
-3) improve tag UI
-4) add videos and architecture diagram
+- ViewModel (VM)
+- Use Cases
+- Composable elements 
 
+We also feature UI tests for individual composables and entire screen flows.
+
+---
+
+## 📱 **Application Overview**
+
+- **Source**: Connects to **Paprika** to list cryptocurrency coins and tags.
+- **Navigation**: Click on a coin for a detailed dialog box.
+- **Refresh**: Update your data with a simple button press.
+- **Filtering**: Use tags to filter the displayed cryptocurrencies.
+
+---
+
+## ⏳ **Upcoming Enhancements**
+
+1. **Coin Screen**:
+   - Pass coin ID
+   - Fetch and display data
+2. **Cache Integration**
+3. **UI Overhaul**: Tag section improvements.
+4. **Media**: Introduction of videos and architecture diagrams.
+
+---
+
+<div align="center">
+
+**Thank you for checking out Coin Fetcher!** ✨
+
+</div>
 
 
 
